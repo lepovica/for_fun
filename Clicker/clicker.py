@@ -11,7 +11,7 @@ class Clicker:
         self.screen = self.display.screen()
         self.root = self.screen.root
 
-    def mouseClick(self, x, y):
+    def mouse_click(self, x, y):
         self.root.warp_pointer(x, y)
         self.display.sync()
         Xlib.ext.xtest.fake_input(self.display, Xlib.X.ButtonPress, 1)
@@ -20,11 +20,20 @@ class Clicker:
         Xlib.ext.xtest.fake_input(self.display, Xlib.X.ButtonRelease, 1)
         self.display.sync()
 
+    def mouse_detect(self):
+        pointer = self.root.query_pointer()._data
+        return (pointer["root_x"], pointer["root_y"])
 
 def main():
     c = Clicker()
+    position = c.mouse_detect()
+    print(position)
     for i in range(100):
-        c.mouseClick(100, 100)
+        c.mouse_click(position[0], position[1])
+
+    
+    
+
 
 
 if __name__ == '__main__':
